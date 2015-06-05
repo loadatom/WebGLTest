@@ -43,4 +43,4 @@ Temporary Items
 .apdisk
 
 # Visual Studio temp
-.suo
+*.suo
