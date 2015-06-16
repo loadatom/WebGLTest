@@ -1,16 +1,9 @@
 ﻿var g_VERTEX_SHADER_SRC =
     'attribute vec4 aPos;       \n' +
+    'uniform mat4 uMat;   \n' +
     'void main() {\n' +
-    '   gl_Position = aPos;     \n' +
-    '   gl_PointSize = 10.0;    \n' +
+    '   gl_Position = uMat * aPos;     \n' +
     '}\n';
-
-var g_VERTEX_SHADER_SRC2 =
-  'attribute vec4 a_Position;\n' +
-  'void main() {\n' +
-  '  gl_Position = a_Position;\n' +
-  '  gl_PointSize = 10.0;\n' +
-  '}\n';
 
 var g_FRAG_SHADER_SRC =
     'void main() {\n' +
@@ -49,6 +42,12 @@ function setupVertexBuffer(gl) {
     var aPos = gl.getAttribLocation(gl.program, 'aPos');
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(aPos);
+
+    var mat = new Matrix4();
+    mat.setScale(1.0, 0.5, 1.0);
+    mat.rotate(45, 0, 0, 1);
+    var uMat = gl.getUniformLocation(gl.program, 'uMat');
+    gl.uniformMatrix4fv(uMat, false, mat.elements);
 
     return Math.floor(vertices.length / 2);
 }
